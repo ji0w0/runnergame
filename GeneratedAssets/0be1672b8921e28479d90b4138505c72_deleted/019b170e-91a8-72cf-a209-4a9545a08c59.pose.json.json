@@ -1,0 +1,11 @@
+{
+    "asset": "0be1672b8921e28479d90b4138505c72",
+    "fileName": "019b170e-91a8-72cf-a209-4a9545a08c59.pose.json",
+    "prompt": "Serving Walk",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 0,
+    "w3CTraceId": "31ab5fe37bcf779b691cfbe93ea58c4b",
+    "isTrimmed": false
+}

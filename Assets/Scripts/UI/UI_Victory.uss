@@ -1,0 +1,168 @@
+/* 배경 오버레이: 어두운 대신 살짝 뽀샤시 */
+.overlay {
+    position: absolute;
+    left: 0; top: 0; right: 0; bottom: 0;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(20, 25, 35, 0.35);
+}
+
+/* 메인 카드 */
+.card {
+    width: 460px;
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-top: 20px;
+    padding-bottom: 18px;
+
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+
+    background-color: rgba(255, 255, 255, 0.98);
+
+    /* UI Toolkit에 “진짜 그림자”는 제한적이라, 경계/톤으로 귀여운 느낌 */
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgba(255, 255, 255, 0.8);
+    border-right-color: rgba(255, 255, 255, 0.8);
+    border-top-color: rgba(255, 255, 255, 0.8);
+    border-bottom-color: rgba(230, 230, 240, 1);
+}
+
+/* 헤더 */
+.header {
+    margin-bottom: 14px;
+}
+
+.title {
+    unity-font-style: bold;
+    font-size: 28px;
+    color: rgba(30, 35, 45, 1);
+    unity-text-align: middle-center;
+}
+
+.subtitle {
+    margin-top: 4px;
+    font-size: 13px;
+    color: rgba(90, 95, 110, 1);
+    unity-text-align: middle-center;
+}
+
+/* 칩(아이템 줄)들을 카드처럼 */
+.chips {
+    margin-top: 6px;
+}
+
+.chip {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    margin-bottom: 10px;
+
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgba(255, 255, 255, 0.65);
+    border-right-color: rgba(255, 255, 255, 0.65);
+    border-top-color: rgba(255, 255, 255, 0.65);
+    border-bottom-color: rgba(210, 210, 225, 0.7);
+}
+
+.chip-icon {
+    width: 28px;
+    unity-text-align: middle-center;
+    font-size: 18px;
+}
+
+.chip-label {
+    flex-grow: 1;
+    margin-left: 8px;
+    font-size: 14px;
+    color: rgba(45, 50, 65, 1);
+    unity-font-style: bold;
+}
+
+.chip-value {
+    min-width: 44px;
+    unity-text-align: middle-right;
+    font-size: 16px;
+    color: rgba(25, 30, 40, 1);
+    unity-font-style: bold;
+}
+
+/* 칩 색감: 파스텔 */
+.chip-hamburger { background-color: rgba(255, 236, 209, 1); }
+.chip-money     { background-color: rgba(220, 246, 224, 1); }
+.chip-trash     { background-color: rgba(226, 236, 255, 1); }
+
+/* 토탈 */
+.total-wrap {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+
+    background-color: rgba(245, 246, 250, 1);
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(220, 225, 235, 1);
+}
+
+.total-label {
+    font-size: 14px;
+    color: rgba(70, 75, 90, 1);
+    unity-font-style: bold;
+}
+
+.total-value {
+    font-size: 18px;
+    color: rgba(30, 35, 45, 1);
+    unity-font-style: bold;
+}
+
+/* 버튼: 통통 + 확실한 CTA */
+.continue-btn {
+    margin-top: 14px;
+    height: 48px;
+
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+
+    background-color: rgba(255, 206, 64, 1);
+    color: rgba(35, 30, 20, 1);
+
+    unity-font-style: bold;
+    font-size: 16px;
+
+    border-bottom-width: 3px;
+    border-bottom-color: rgba(220, 165, 35, 1);
+}

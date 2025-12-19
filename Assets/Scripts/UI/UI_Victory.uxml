@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="Overlay" class="overlay">
+        <ui:VisualElement name="Card" class="card">
+            <ui:VisualElement class="header">
+                <ui:Label name="Title" text="Stage Clear!" class="title" />
+                <ui:Label name="Subtitle" text="You delivered everything 🎉" class="subtitle" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="chips">
+                <ui:VisualElement class="chip chip-hamburger">
+                    <ui:Label text="🍔" class="chip-icon" />
+                    <ui:Label text="Hamburger" class="chip-label" />
+                    <ui:Label name="HamburgerValue" text="0" class="chip-value" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="chip chip-money">
+                    <ui:Label text="💰" class="chip-icon" />
+                    <ui:Label text="Money" class="chip-label" />
+                    <ui:Label name="MoneyValue" text="0" class="chip-value" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="chip chip-trash">
+                    <ui:Label text="🗑️" class="chip-icon" />
+                    <ui:Label text="Trash" class="chip-label" />
+                    <ui:Label name="TrashValue" text="0" class="chip-value" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="total-wrap">
+                <ui:Label text="Total" class="total-label" />
+                <ui:Label name="TotalValue" text="0" class="total-value" />
+            </ui:VisualElement>
+
+            <ui:Button name="ContinueButton" text="Continue" class="continue-btn" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,11 @@
+{
+    "asset": "f6dc9d944483da2498bc7109bbeefc5a",
+    "fileName": "019b115b-5015-7a36-a0b2-5742ec707db3.pose.json",
+    "prompt": "walking like baby doll",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1881649374,
+    "w3CTraceId": "c9d2b2fb2e66d6ded431de333f8e6a82",
+    "isTrimmed": false
+}
