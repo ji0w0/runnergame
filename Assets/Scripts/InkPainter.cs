@@ -56,6 +56,12 @@ public class InkPainter : MonoBehaviour
     // worldRadius: 월드 단위 반지름(0.2~0.6 같은)
     public void Stamp(Vector3 worldPos, float worldRadius, Color color)
     {
+        Stamp(worldPos, worldRadius, color, brushTex);
+    }
+
+    // 텍스처를 지정할 수 있는 오버로드
+    public void Stamp(Vector3 worldPos, float worldRadius, Color color, Texture2D customBrushTex)
+    {
         Vector2 uv = WorldToUV(worldPos);
         Debug.Log($"Stamp world={worldPos} uv={uv}");
         if (uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1) return;
@@ -66,7 +72,7 @@ public class InkPainter : MonoBehaviour
         float uvRadiusY = worldRadius / groundSize.y;
 
         stampMat.SetVector(CenterId, new Vector4(uv.x, uv.y, uvRadiusX, uvRadiusY));
-        stampMat.SetTexture(BrushTexId, brushTex);
+        stampMat.SetTexture(BrushTexId, customBrushTex != null ? customBrushTex : brushTex);
         stampMat.SetColor(StampColorId, color); // ✅ 스탬프마다 색 다르게
 
         var tmp = RenderTexture.GetTemporary(inkRT.descriptor);
