@@ -1,168 +1,331 @@
-/* 배경 오버레이: 어두운 대신 살짝 뽀샤시 */
+/* ===== Root Overlay ===== */
 .overlay {
     position: absolute;
-    left: 0; top: 0; right: 0; bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    -unity-overflow-clip-box: content-box;
+}
+
+/* Animated gradient dim background */
+.dim {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(20, 25, 45, 0.88);
+}
+
+/* ===== Decorative Particles ===== */
+.particles {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.star {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+}
+
+.star-1 { left: 10%; top: 15%; width: 16px; height: 16px; }
+.star-2 { left: 85%; top: 20%; width: 20px; height: 20px; }
+.star-3 { left: 15%; top: 75%; width: 18px; height: 18px; }
+.star-4 { left: 80%; top: 70%; width: 22px; height: 22px; }
+.star-5 { left: 50%; top: 8%; width: 14px; height: 14px; }
+
+/* ===== Card Layout ===== */
+.cardWrap {
+    width: 88%;
+    max-width: 480px;
+    min-width: 300px;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 2;
+}
+
+/* Top ribbon decoration */
+.ribbon {
+    width: 110%;
+    height: 48px;
+    margin-bottom: -24px;
+    z-index: 5;
+
+    background-color: rgb(255, 100, 100);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 
     justify-content: center;
     align-items: center;
 
-    background-color: rgba(20, 25, 35, 0.35);
+    border-bottom-width: 3px;
+    border-bottom-color: rgba(180, 60, 60, 0.8);
 }
 
-/* 메인 카드 */
+.ribbon-text {
+    unity-font-style: bold;
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 2px;
+    -unity-text-align: middle-center;
+}
+
+/* Main card with gradient-like effect */
 .card {
-    width: 460px;
-    padding-left: 22px;
-    padding-right: 22px;
-    padding-top: 20px;
-    padding-bottom: 18px;
+    width: 100%;
+
+    padding-left: 28px;
+    padding-right: 28px;
+    padding-top: 48px;
+    padding-bottom: 24px;
+
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+
+    background-color: rgba(255, 255, 255, 0.98);
+
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-left-color: rgba(255, 220, 100, 0.6);
+    border-right-color: rgba(255, 220, 100, 0.6);
+    border-top-color: rgba(255, 220, 100, 0.6);
+    border-bottom-color: rgba(255, 220, 100, 0.6);
+
+    row-gap: 12px;
+}
+
+/* Enhanced shadows with layered effect */
+.blobShadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    border-top-left-radius: 34px;
+    border-top-right-radius: 34px;
+    border-bottom-left-radius: 34px;
+    border-bottom-right-radius: 34px;
+
+    z-index: 1;
+}
+
+.blobShadow-1 {
+    margin-top: 8px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.blobShadow-2 {
+    margin-top: 16px;
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Trophy Icon ===== */
+.trophy-container {
+    width: 100%;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.trophy-shine {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: rgba(255, 215, 0, 0.15);
+}
+
+.trophy-icon {
+    font-size: 64px;
+    -unity-text-align: middle-center;
+}
+
+/* ===== Text Styles ===== */
+.title {
+    unity-font-style: bold;
+    font-size: 38px;
+    letter-spacing: 2px;
+    color: rgb(255, 100, 100);
+    -unity-text-align: middle-center;
+    
+    /* Text shadow effect (approximation) */
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(180, 60, 60, 0.3);
+}
+
+.subtitle {
+    font-size: 16px;
+    color: rgba(100, 100, 120, 0.8);
+    -unity-text-align: middle-center;
+    margin-top: -6px;
+    margin-bottom: 8px;
+}
+
+/* ===== Score Display ===== */
+.scoreContainer {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.scoreGlow {
+    position: absolute;
+    width: 200px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 215, 0, 0.12);
+}
+
+.scoreRow {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.score {
+    unity-font-style: bold;
+    font-size: 72px;
+    color: rgb(255, 165, 0);
+    -unity-text-align: middle-center;
+    letter-spacing: -2px;
+    
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgba(180, 100, 0, 0.3);
+}
+
+.scoreUnit {
+    font-size: 22px;
+    unity-font-style: bold;
+    color: rgba(255, 165, 0, 0.7);
+    margin-left: 8px;
+    padding-bottom: 12px;
+}
+
+/* Gradient-style divider */
+.divider {
+    height: 3px;
+    width: 100%;
+    background-color: rgba(255, 215, 0, 0.3);
+    margin-top: 12px;
+    margin-bottom: 16px;
+    border-radius: 3px;
+}
+
+.hint {
+    font-size: 13px;
+    color: rgba(100, 100, 120, 0.6);
+    -unity-text-align: middle-center;
+    margin-top: 12px;
+}
+
+/* ===== Primary Button ===== */
+.btnPrimary {
+    height: 64px;
+    width: 100%;
 
     border-top-left-radius: 22px;
     border-top-right-radius: 22px;
     border-bottom-left-radius: 22px;
     border-bottom-right-radius: 22px;
 
-    background-color: rgba(255, 255, 255, 0.98);
+    background-color: rgb(100, 200, 100);
 
-    /* UI Toolkit에 “진짜 그림자”는 제한적이라, 경계/톤으로 귀여운 느낌 */
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-left-color: rgba(255, 255, 255, 0.8);
-    border-right-color: rgba(255, 255, 255, 0.8);
-    border-top-color: rgba(255, 255, 255, 0.8);
-    border-bottom-color: rgba(230, 230, 240, 1);
-}
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 6px;
+    border-bottom-color: rgba(60, 140, 60, 0.8);
 
-/* 헤더 */
-.header {
-    margin-bottom: 14px;
-}
-
-.title {
-    unity-font-style: bold;
-    font-size: 28px;
-    color: rgba(30, 35, 45, 1);
-    unity-text-align: middle-center;
-}
-
-.subtitle {
-    margin-top: 4px;
-    font-size: 13px;
-    color: rgba(90, 95, 110, 1);
-    unity-text-align: middle-center;
-}
-
-/* 칩(아이템 줄)들을 카드처럼 */
-.chips {
-    margin-top: 6px;
-}
-
-.chip {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    margin-bottom: 10px;
-
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-    border-left-color: rgba(255, 255, 255, 0.65);
-    border-right-color: rgba(255, 255, 255, 0.65);
-    border-top-color: rgba(255, 255, 255, 0.65);
-    border-bottom-color: rgba(210, 210, 225, 0.7);
-}
-
-.chip-icon {
-    width: 28px;
-    unity-text-align: middle-center;
-    font-size: 18px;
-}
-
-.chip-label {
-    flex-grow: 1;
-    margin-left: 8px;
-    font-size: 14px;
-    color: rgba(45, 50, 65, 1);
-    unity-font-style: bold;
-}
-
-.chip-value {
-    min-width: 44px;
-    unity-text-align: middle-right;
-    font-size: 16px;
-    color: rgba(25, 30, 40, 1);
-    unity-font-style: bold;
-}
-
-/* 칩 색감: 파스텔 */
-.chip-hamburger { background-color: rgba(255, 236, 209, 1); }
-.chip-money     { background-color: rgba(220, 246, 224, 1); }
-.chip-trash     { background-color: rgba(226, 236, 255, 1); }
-
-/* 토탈 */
-.total-wrap {
-    flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
-    margin-top: 6px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
-    border-bottom-left-radius: 14px;
-    border-bottom-right-radius: 14px;
-
-    background-color: rgba(245, 246, 250, 1);
-    border-bottom-width: 1px;
-    border-bottom-color: rgba(220, 225, 235, 1);
+    margin-top: 8px;
+    position: relative;
 }
 
-.total-label {
-    font-size: 14px;
-    color: rgba(70, 75, 90, 1);
-    unity-font-style: bold;
+.btnShine {
+    position: absolute;
+    width: 100%;
+    height: 40%;
+    top: 0;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
-.total-value {
-    font-size: 18px;
-    color: rgba(30, 35, 45, 1);
+.btnPrimary__text {
     unity-font-style: bold;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 1px;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(60, 140, 60, 0.5);
 }
 
-/* 버튼: 통통 + 확실한 CTA */
-.continue-btn {
-    margin-top: 14px;
-    height: 48px;
+.btnPrimary:hover {
+    background-color: rgb(110, 210, 110);
+}
 
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
-
-    background-color: rgba(255, 206, 64, 1);
-    color: rgba(35, 30, 20, 1);
-
-    unity-font-style: bold;
-    font-size: 16px;
-
+.btnPrimary:active {
+    translate: 0px 3px;
     border-bottom-width: 3px;
-    border-bottom-color: rgba(220, 165, 35, 1);
+}
+
+/* ===== Confetti Decoration ===== */
+.confetti {
+    position: absolute;
+    width: 12px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.confetti-1 {
+    left: 20%;
+    top: 10%;
+    background-color: rgba(255, 100, 100, 0.8);
+    rotate: 15deg;
+}
+
+.confetti-2 {
+    left: 75%;
+    top: 25%;
+    background-color: rgba(100, 150, 255, 0.8);
+    rotate: -25deg;
+}
+
+.confetti-3 {
+    left: 30%;
+    top: 80%;
+    background-color: rgba(255, 215, 0, 0.8);
+    rotate: 45deg;
+}
+
+.confetti-4 {
+    left: 70%;
+    top: 75%;
+    background-color: rgba(150, 255, 150, 0.8);
+    rotate: -15deg;
 }

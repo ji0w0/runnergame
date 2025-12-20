@@ -108,7 +108,7 @@ public class InkPainter : MonoBehaviour
         var prev = RenderTexture.active;
         RenderTexture.active = inkRT;
 
-        Texture2D tex = new Texture2D(resolution, resolution, TextureFormat.RGBA32, false, true);
+        var tex = new Texture2D(resolution, resolution, TextureFormat.RGBA32, false, true);
         tex.ReadPixels(new Rect(0, 0, resolution, resolution), 0, 0);
         tex.Apply(false, false);
 
@@ -119,11 +119,31 @@ public class InkPainter : MonoBehaviour
 
         int inkCount = 0;
         for (int i = 0; i < pixels.Length; i++)
-            if (pixels[i].a > alphaThreshold) inkCount++;
+            if (pixels[i].a > alphaThreshold)
+                inkCount++;
 
-        float coverage = inkCount / (float)pixels.Length;
-        float worldArea = groundSize.x * groundSize.y;
-        return coverage * worldArea;
+        float coverage01 = inkCount / (float)(pixels.Length * 10 / 14); // 0~1
+        return coverage01 * 100f; // 0~100
+
+        //var prev = RenderTexture.active;
+        //RenderTexture.active = inkRT;
+
+        //Texture2D tex = new Texture2D(resolution, resolution, TextureFormat.RGBA32, false, true);
+        //tex.ReadPixels(new Rect(0, 0, resolution, resolution), 0, 0);
+        //tex.Apply(false, false);
+
+        //RenderTexture.active = prev;
+
+        //var pixels = tex.GetPixels32();
+        //Destroy(tex);
+
+        //int inkCount = 0;
+        //for (int i = 0; i < pixels.Length; i++)
+        //    if (pixels[i].a > alphaThreshold) inkCount++;
+
+        //float coverage = inkCount / (float)pixels.Length;
+        //float worldArea = groundSize.x * groundSize.y;
+        //return coverage * worldArea;
     }
 
     public void SetInkColor(Color c)

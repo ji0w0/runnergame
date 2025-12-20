@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         SetupAnimator();
 
-        //_lastStampTime = stampInterval - 0.02f; // 시작하자마자 바로 찍히도록 약간 보정
+        _lastStampTime = -0.1f; // 시작하자마자 바로 찍히도록 약간 보정
     }
 
     void SetupAnimator()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class Boss : MonoBehaviour
     public UI_Victory victoryUI;
     public Stage stage;
 
+    public Action arrivalCallback;
+
     bool _processing;
 
     void Reset()
@@ -33,41 +36,55 @@ public class Boss : MonoBehaviour
         var player = other.GetComponentInParent<Player>();
         if (player == null) return;
 
-        StartCoroutine(ProcessPlayerArrival(player));
+        //StartCoroutine(ProcessPlayerArrival(player));
+        OnPlayerArrival(player);
     }
 
-    IEnumerator ProcessPlayerArrival(Player player)
+    void OnPlayerArrival(Player player)
     {
-        _processing = true;
-
-        // 1) 플레이어 멈추기
         if (player.Controller != null)
             player.Controller.Freeze(true);
 
-        // 2) 아이템 하나씩 건네주기
-        if (player.Inventory != null && player.Inventory.HasPiledItems())
-        {
-            yield return player.Inventory.GiveAllToBoss(
-                itemReturnTransform,
-                giveMoveDuration,
-                giveInterval
-            );
-        }
-
-        // 제출 끝난 뒤
-        if (victoryUI != null && player.Inventory != null)
-        {
-            victoryUI.Show(
-                player.Inventory.hamburger,
-                player.Inventory.money,
-                player.Inventory.trash
-            );
-        }
-        else
-        {
-            Debug.LogWarning("[Boss] victoryUI or player.Inventory is missing.");
-        }
-
-        _processing = false;
+        arrivalCallback?.Invoke();
     }
+
+    public void ResetStage()
+    {
+        Reset();
+    }
+
+    //IEnumerator ProcessPlayerArrival(Player player)
+    //{
+    //    _processing = true;
+
+    //    // 1) 플레이어 멈추기
+    //    if (player.Controller != null)
+    //        player.Controller.Freeze(true);
+
+    //    // 2) 아이템 하나씩 건네주기
+    //    if (player.Inventory != null && player.Inventory.HasPiledItems())
+    //    {
+    //        yield return player.Inventory.GiveAllToBoss(
+    //            itemReturnTransform,
+    //            giveMoveDuration,
+    //            giveInterval
+    //        );
+    //    }
+
+    //    // 제출 끝난 뒤
+    //    if (victoryUI != null && player.Inventory != null)
+    //    {
+    //        victoryUI.Show(
+    //            player.Inventory.hamburger,
+    //            player.Inventory.money,
+    //            player.Inventory.trash
+    //        );
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning("[Boss] victoryUI or player.Inventory is missing.");
+    //    }
+
+    //    _processing = false;
+    //}
 }

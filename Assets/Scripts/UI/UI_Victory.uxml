@@ -1,38 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:VisualElement name="Overlay" class="overlay">
-        <ui:VisualElement name="Card" class="card">
-            <ui:VisualElement class="header">
-                <ui:Label name="Title" text="Stage Clear!" class="title" />
-                <ui:Label name="Subtitle" text="You delivered everything 🎉" class="subtitle" />
-            </ui:VisualElement>
-
-            <ui:VisualElement class="chips">
-                <ui:VisualElement class="chip chip-hamburger">
-                    <ui:Label text="🍔" class="chip-icon" />
-                    <ui:Label text="Hamburger" class="chip-label" />
-                    <ui:Label name="HamburgerValue" text="0" class="chip-value" />
-                </ui:VisualElement>
-
-                <ui:VisualElement class="chip chip-money">
-                    <ui:Label text="💰" class="chip-icon" />
-                    <ui:Label text="Money" class="chip-label" />
-                    <ui:Label name="MoneyValue" text="0" class="chip-value" />
-                </ui:VisualElement>
-
-                <ui:VisualElement class="chip chip-trash">
-                    <ui:Label text="🗑️" class="chip-icon" />
-                    <ui:Label text="Trash" class="chip-label" />
-                    <ui:Label name="TrashValue" text="0" class="chip-value" />
-                </ui:VisualElement>
-            </ui:VisualElement>
-
-            <ui:VisualElement class="total-wrap">
-                <ui:Label text="Total" class="total-label" />
-                <ui:Label name="TotalValue" text="0" class="total-value" />
-            </ui:VisualElement>
-
-            <ui:Button name="ContinueButton" text="Continue" class="continue-btn" />
+        <!-- Animated background dim -->
+        <ui:VisualElement class="dim"/>
+        
+        <!-- Decorative particles/stars background -->
+        <ui:VisualElement class="particles">
+            <ui:VisualElement class="star star-1"/>
+            <ui:VisualElement class="star star-2"/>
+            <ui:VisualElement class="star star-3"/>
+            <ui:VisualElement class="star star-4"/>
+            <ui:VisualElement class="star star-5"/>
         </ui:VisualElement>
+
+        <!-- Main victory card -->
+        <ui:VisualElement class="cardWrap">
+            <!-- Top decoration ribbon -->
+            <ui:VisualElement class="ribbon">
+                <ui:Label class="ribbon-text" text="★ STAGE CLEAR ★" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="card">
+                <!-- Trophy icon area -->
+                <ui:VisualElement class="trophy-container">
+                    <ui:VisualElement class="trophy-shine"/>
+                    <ui:Label class="trophy-icon" text="🏆" />
+                </ui:VisualElement>
+
+                <!-- Victory title with gradient effect -->
+                <ui:Label class="title" text="VICTORY!" />
+                <ui:Label class="subtitle" text="Amazing job!" />
+
+                <!-- Score display with glow -->
+                <ui:VisualElement class="scoreContainer">
+                    <ui:VisualElement class="scoreGlow"/>
+                    <ui:VisualElement class="scoreRow">
+                        <ui:Label name="TotalValue" class="score" text="0" />
+                        <ui:Label class="scoreUnit" text="pts" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- Decorative divider with gradient -->
+                <ui:VisualElement class="divider"/>
+
+                <!-- Continue button with icon -->
+                <ui:Button name="ContinueButton" class="btnPrimary">
+                    <ui:VisualElement class="btnShine"/>
+                    <ui:Label class="btnPrimary__text" text="▶ CONTINUE" />
+                </ui:Button>
+
+                <!-- Animated hint text -->
+                <ui:Label class="hint" text="✨ Tap to play again ✨" />
+            </ui:VisualElement>
+
+            <!-- Enhanced shadow with multiple layers -->
+            <ui:VisualElement class="blobShadow blobShadow-1" />
+            <ui:VisualElement class="blobShadow blobShadow-2" />
+        </ui:VisualElement>
+
+        <!-- Confetti elements -->
+        <ui:VisualElement class="confetti confetti-1"/>
+        <ui:VisualElement class="confetti confetti-2"/>
+        <ui:VisualElement class="confetti confetti-3"/>
+        <ui:VisualElement class="confetti confetti-4"/>
     </ui:VisualElement>
 </ui:UXML>

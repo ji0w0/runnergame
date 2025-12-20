@@ -14,9 +14,6 @@ public class UI_Victory : MonoBehaviour
     public event Action OnContinue;
 
     VisualElement _overlay;
-    Label _hamburgerValue;
-    Label _moneyValue;
-    Label _trashValue;
     Label _totalValue;
     Button _continueButton;
 
@@ -51,14 +48,24 @@ public class UI_Victory : MonoBehaviour
         Cache(tree);
         Hook();
         Hide();
+
+        // safe area]
+        Rect safe = Screen.safeArea;
+
+        float top = Screen.height - (safe.y + safe.height);
+        float bottom = safe.y;
+        float left = safe.x;
+        float right = Screen.width - (safe.x + safe.width);
+
+        root.style.paddingTop = top;
+        root.style.paddingBottom = bottom;
+        root.style.paddingLeft = left;
+        root.style.paddingRight = right;
     }
 
     void Cache(VisualElement tree)
     {
         _overlay = tree.Q<VisualElement>("Overlay");
-        _hamburgerValue = tree.Q<Label>("HamburgerValue");
-        _moneyValue = tree.Q<Label>("MoneyValue");
-        _trashValue = tree.Q<Label>("TrashValue");
         _totalValue = tree.Q<Label>("TotalValue");
         _continueButton = tree.Q<Button>("ContinueButton");
 
@@ -72,14 +79,9 @@ public class UI_Victory : MonoBehaviour
             _continueButton.clicked += () => OnContinue?.Invoke();
     }
 
-    public void Show(int hamburger, int money, int trash)
+    public void Show(int total)
     {
-        int total = hamburger + money + trash;
-
-        if (_hamburgerValue != null) _hamburgerValue.text = hamburger.ToString();
-        if (_moneyValue != null) _moneyValue.text = money.ToString();
-        if (_trashValue != null) _trashValue.text = trash.ToString();
-        if (_totalValue != null) _totalValue.text = total.ToString();
+        if (_totalValue != null) _totalValue.text = total.ToString() + "%";
 
         SetVisible(true);
     }
