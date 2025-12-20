@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: c041d81810a2bf44ebcb6dd05a9c99e9, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -469,7 +469,7 @@ Camera:
   m_GameObject: {fileID: 1225004443}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -1993,13 +1993,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   forwardSpeed: 10
   horizontalSpeed: 3
-  horizontalLimit: 2.4
+  horizontalLimit: 3
   animator: {fileID: 8665060959765715588}
   animationSpeed: 2
+  maxRotationAngle: 50
+  rotationSpeed: 100
   painter: {fileID: 1408920595}
   playerInkColor: {r: 0.9137255, g: 0.74509805, b: 0.12941177, a: 1}
   playerBrushTexture: {fileID: 2800000, guid: 3b0ad53733d33d141a5ea8565fbfd6e2, type: 3}
-  playerStampRadius: 2
+  playerStampRadius: 2.4
   stampInterval: 0.275
   groundMask:
     serializedVersion: 2

@@ -63,8 +63,10 @@ Material:
     - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Rotation: 0
     - _Smoothness: 0
     m_Colors:
+    - _Color: {r: 0.19496846, g: 0.19128011, b: 0.1833194, a: 1}
     - _InkColor: {r: 0.9137255, g: 0.74509805, b: 0.12941177, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

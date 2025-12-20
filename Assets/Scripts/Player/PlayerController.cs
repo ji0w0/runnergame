@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     public Animator animator;              // 플레이어 Animator
     public float animationSpeed = 2f;      // 애니메이션 속도 배율
 
+    [Header("Rotation")]
+    public float maxRotationAngle = 20f;   // 최대 회전 각도 (좌우)
+    public float rotationSpeed = 5f;       // 회전 속도 (부드러운 전환)
+
     [Header("Ink Painting")]
     public InkPainter painter;             // InkPainter 참조
     public Color playerInkColor = Color.blue; // 플레이어 잉크 색상
@@ -21,9 +25,9 @@ public class PlayerController : MonoBehaviour
     public float stampOffsetX = 0.1f;        // 스탬프 좌우 오프셋
     public bool stampFlipFlop;
 
-    float _lastPointerX;
-    bool _isDragging;
     float _lastStampTime;
+    float _currentHorizontalVelocity;      // 현재 좌우 이동 속도
+    float _targetRotationY;                // 목표 Y 회전값
 
     public bool IsFrozen { get; private set; }
 
@@ -31,7 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         SetupAnimator();
 
-        _lastStampTime = -0.1f; // 시작하자마자 바로 찍히도록 약간 보정
+        _lastStampTime = -0.2f; // 시작하자마자 바로 찍히도록 약간 보정
     }
 
     void SetupAnimator()
@@ -65,6 +69,7 @@ public class PlayerController : MonoBehaviour
         MoveForward();
         HandleDragHorizontal();
         HandleInkStamping();
+        UpdateRotation();
     }
 
     void MoveForward()
@@ -75,74 +80,89 @@ public class PlayerController : MonoBehaviour
     void HandleDragHorizontal()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
-        HandleMouseDrag();
+        HandleMouseInput();
 #endif
 
 #if UNITY_ANDROID || UNITY_IOS
-        HandleTouchDrag();
+        HandleTouchInput();
 #endif
     }
 
-    void HandleMouseDrag()
+    void HandleMouseInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            _isDragging = true;
-            _lastPointerX = Input.mousePosition.x;
+            float screenCenterX = Screen.width * 0.5f;
+            float mouseX = Input.mousePosition.x;
+            
+            // 화면 중심을 기준으로 좌우 이동
+            MoveTowardsScreenPosition(mouseX, screenCenterX);
         }
-        else if (Input.GetMouseButtonUp(0))
+        else
         {
-            _isDragging = false;
+            // 클릭하지 않으면 속도를 0으로
+            _currentHorizontalVelocity = 0f;
         }
-
-        if (!_isDragging)
-            return;
-
-        float currentX = Input.mousePosition.x;
-        float deltaX = currentX - _lastPointerX;
-        _lastPointerX = currentX;
-
-        MoveHorizontal(deltaX);
     }
 
-    void HandleTouchDrag()
+    void HandleTouchInput()
     {
-        if (Input.touchCount == 0)
+        if (Input.touchCount > 0)
         {
-            _isDragging = false;
-            return;
+            Touch touch = Input.GetTouch(0);
+            
+            float screenCenterX = Screen.width * 0.5f;
+            float touchX = touch.position.x;
+            
+            // 화면 중심을 기준으로 좌우 이동
+            MoveTowardsScreenPosition(touchX, screenCenterX);
         }
-
-        Touch touch = Input.GetTouch(0);
-
-        if (touch.phase == TouchPhase.Began)
+        else
         {
-            _isDragging = true;
-            _lastPointerX = touch.position.x;
+            _currentHorizontalVelocity = 0f;
         }
-        else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-        {
-            _isDragging = false;
-        }
-
-        if (!_isDragging)
-            return;
-
-        float currentX = touch.position.x;
-        float deltaX = currentX - _lastPointerX;
-        _lastPointerX = currentX;
-
-        MoveHorizontal(deltaX);
     }
 
-    void MoveHorizontal(float deltaX)
+    void MoveTowardsScreenPosition(float inputX, float screenCenterX)
     {
-        float moveX = (deltaX / Screen.width) * horizontalSpeed;
-
+        // 화면 중심에서 입력 위치까지의 거리 (-1 ~ +1로 정규화)
+        float offsetFromCenter = (inputX - screenCenterX) / (Screen.width * 0.5f);
+        
+        // 목표 X 위치 계산
+        float targetX = offsetFromCenter * horizontalLimit;
+        
+        // 현재 위치에서 목표 위치로 이동
         Vector3 pos = transform.position;
+        float moveX = (targetX - pos.x) * horizontalSpeed * Time.deltaTime;
+        
+        // 현재 좌우 이동 속도 저장 (회전 계산용)
+        _currentHorizontalVelocity = moveX / Time.deltaTime;
+        
         pos.x += moveX;
         pos.x = Mathf.Clamp(pos.x, -horizontalLimit, horizontalLimit);
         transform.position = pos;
+    }
+
+    void UpdateRotation()
+    {
+        // 좌우 이동 속도에 따라 목표 회전값 계산
+        // 속도를 정규화하여 -1 ~ +1 범위로 변환
+        float normalizedVelocity = Mathf.Clamp(_currentHorizontalVelocity / horizontalSpeed, -1f, 1f);
+        
+        // 목표 Y 회전값 계산 (오른쪽으로 갈수록 양수)
+        _targetRotationY = normalizedVelocity * maxRotationAngle;
+
+        // 현재 회전값을 목표값으로 부드럽게 전환
+        Vector3 currentEuler = transform.localEulerAngles;
+        
+        // 0~360 범위를 -180~180 범위로 변환
+        float currentY = currentEuler.y;
+        if (currentY > 180f) currentY -= 360f;
+
+        // Lerp로 부드럽게 회전
+        float newY = Mathf.Lerp(currentY, _targetRotationY, rotationSpeed * Time.deltaTime);
+        
+        transform.localEulerAngles = new Vector3(currentEuler.x, newY, currentEuler.z);
     }
 
     void HandleInkStamping()
@@ -158,10 +178,17 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(origin, Vector3.down, out var hit, 10f, groundMask, QueryTriggerInteraction.Ignore))
         {
-            hit.point += Vector3.right * stampOffsetX * (stampFlipFlop ? 1 : -1);
+            // 캐릭터의 Y 회전 각도 가져오기
+            float rotationY = transform.localEulerAngles.y;
+            
+            // 0~360 범위를 -180~180 범위로 변환
+            if (rotationY > 180f) rotationY -= 360f;
 
-            // 커스텀 텍스처와 반지름 사용
-            painter.Stamp(hit.point, playerStampRadius, playerInkColor, playerBrushTexture);
+            hit.point += Vector3.right * stampOffsetX * (stampFlipFlop ? 1 : -1); //왼발오른발
+            hit.point += Vector3.left * playerStampRadius * Mathf.Sin(rotationY) * 1 / 4;
+
+            // 커스텀 텍스처, 반지름, 회전 각도 사용
+            painter.Stamp(hit.point, playerStampRadius, playerInkColor, playerBrushTexture, rotationY);
             stampFlipFlop = !stampFlipFlop;
             _lastStampTime = Time.time;
         }

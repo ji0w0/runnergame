@@ -23,6 +23,7 @@ public class InkPainter : MonoBehaviour
     static readonly int InkColorId = Shader.PropertyToID("_InkColor");
     static readonly int StampColorId = Shader.PropertyToID("_StampColor");
     static readonly int BrushTexId = Shader.PropertyToID("_BrushTex");
+    static readonly int RotationId = Shader.PropertyToID("_Rotation");
 
     void Awake()
     {
@@ -74,6 +75,32 @@ public class InkPainter : MonoBehaviour
         stampMat.SetVector(CenterId, new Vector4(uv.x, uv.y, uvRadiusX, uvRadiusY));
         stampMat.SetTexture(BrushTexId, customBrushTex != null ? customBrushTex : brushTex);
         stampMat.SetColor(StampColorId, color); // ✅ 스탬프마다 색 다르게
+
+        var tmp = RenderTexture.GetTemporary(inkRT.descriptor);
+        Graphics.Blit(inkRT, tmp);
+
+        stampMat.SetTexture(MainTexId, tmp);
+        Graphics.Blit(tmp, inkRT, stampMat);
+
+        RenderTexture.ReleaseTemporary(tmp);
+    }
+
+    // 새로운 오버로드 (회전 지원)
+    public void Stamp(Vector3 worldPos, float worldRadius, Color color, Texture2D customBrushTex, float rotationDegrees)
+    {
+        Vector2 uv = WorldToUV(worldPos);
+        Debug.Log($"Stamp world={worldPos} uv={uv}");
+        if (uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1) return;
+
+        // Plane이 정사각이 아닐 수 있어서 X/Z 각각 normalize 해줌
+        // 셰이더는 radius를 "UV 반지름"으로 받는다고 가정.
+        float uvRadiusX = worldRadius / groundSize.x;
+        float uvRadiusY = worldRadius / groundSize.y;
+
+        stampMat.SetVector(CenterId, new Vector4(uv.x, uv.y, uvRadiusX, uvRadiusY));
+        stampMat.SetTexture(BrushTexId, customBrushTex != null ? customBrushTex : brushTex);
+        stampMat.SetColor(StampColorId, color); // ✅ 스탬프마다 색 다르게
+        stampMat.SetFloat(RotationId, rotationDegrees);// * Mathf.Deg2Rad);
 
         var tmp = RenderTexture.GetTemporary(inkRT.descriptor);
         Graphics.Blit(inkRT, tmp);
