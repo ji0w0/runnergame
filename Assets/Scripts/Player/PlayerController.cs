@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     float _lastStampTime;
     float _currentHorizontalVelocity;      // 현재 좌우 이동 속도
     float _targetRotationY;                // 목표 Y 회전값
+    float _originalStampRadius;            // 원래 스탬프 반지름 저장
 
     public bool IsFrozen { get; private set; }
 
@@ -36,6 +37,9 @@ public class PlayerController : MonoBehaviour
         SetupAnimator();
 
         _lastStampTime = -0.2f; // 시작하자마자 바로 찍히도록 약간 보정
+        
+        // 초기 스탬프 반지름 저장
+        _originalStampRadius = playerStampRadius;
     }
 
     void SetupAnimator()
@@ -220,5 +224,17 @@ public class PlayerController : MonoBehaviour
     public void SetStampRadius(float radius)
     {
         playerStampRadius = radius;
+    }
+
+    // 스탬프 반지름을 배율만큼 곱하기
+    public void ScaleStampRadius(float scaleMultiplier)
+    {
+        playerStampRadius *= scaleMultiplier;
+    }
+
+    // 스탬프 반지름을 원래대로 되돌리기
+    public void ResetStampRadius()
+    {
+        playerStampRadius = _originalStampRadius;
     }
 }

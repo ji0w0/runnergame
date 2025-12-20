@@ -7,6 +7,10 @@ public enum ItemType
     Money,
     Trash,
     Ink,
+
+    Item_startIndex = 10,
+    Item_scaleUp = 11,
+    Item_scaleDown = 12,
 }
 
 public class Interactable : MonoBehaviour
@@ -16,6 +20,9 @@ public class Interactable : MonoBehaviour
 
     [Header("Pile Settings")]
     public float pileStepY = 0.15f; // ✅ 종류(프리팹)별로 다르게 설정
+
+    [Header("Item Rotation")]
+    public float rotationSpeed = 100f; // 회전 속도 (도/초)
 
     [Header("Optional")]
     public AudioClip pickupSfx;
@@ -35,9 +42,22 @@ public class Interactable : MonoBehaviour
         if (col != null) col.isTrigger = true;
     }
 
+    void Update()
+    {
+        // ItemType이 Item_startIndex보다 크면 회전
+        if ((int)type > (int)ItemType.Item_startIndex && !_picked)
+        {
+            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (_picked) return;
+
+        // Player 태그가 아니면 무시
+        if (!other.CompareTag("Player"))
+            return;
 
         // 플레이어 루트에서 Player를 찾는다 (자식 콜라이더여도 OK)
         var player = other.GetComponentInParent<Player>();
@@ -51,6 +71,16 @@ public class Interactable : MonoBehaviour
 
         if (pickupSfx != null)
             AudioSource.PlayClipAtPoint(pickupSfx, transform.position);
+
+        // ItemA 타입이면 플레이어 크기 1.5배로 키우기
+        if (type == ItemType.Item_scaleUp)
+        {
+            player.ScalePlayer(1.2f);
+        }
+        else if (type == ItemType.Item_scaleDown)
+        {
+            player.ScalePlayer(0.8f);
+        }
 
         // Stage의 오브젝트 풀로 반환
         var stage = FindAnyObjectByType<Stage>();

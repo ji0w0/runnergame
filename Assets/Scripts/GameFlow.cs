@@ -12,7 +12,12 @@ public class GameFlow : MonoBehaviour
 
     [Header("Player")]
     public Player player;
-    public Vector3 playerStartPosition = new Vector3(0, 0, 0); // 플레이어 시작 위치
+
+    [Header("Camera")]
+    public Camera gameCamera;
+    public Vector3 endCameraPosition = new Vector3(0, 10, -5); // 스테이지 종료 시 카메라 위치
+    public Vector3 endCameraRotation = new Vector3(45, 0, 0);  // 스테이지 종료 시 카메라 회전 (Euler)
+    public float cameraTransitionDuration = 1f; // 카메라 이동 시간 (0 = 즉시)
 
     void Awake()
     {
@@ -21,12 +26,6 @@ public class GameFlow : MonoBehaviour
 
         if (boss != null)
             boss.arrivalCallback = OnStageEnd;
-
-        // 플레이어 초기 위치 저장
-        if (player != null)
-        {
-            playerStartPosition = player.transform.position;
-        }
     }
 
     void HandleContinue()
@@ -46,16 +45,17 @@ public class GameFlow : MonoBehaviour
             stage.ResetStage();
         }
 
-        // 플레이어 초기 위치로 이동
+        // 플레이어 리셋
         if (player != null)
         {
-            player.transform.position = playerStartPosition;
-            
-            // PlayerController의 Freeze 해제
-            if (player.Controller != null)
-            {
-                player.Controller.Freeze(false);
-            }
+            player.ResetPlayer();
+        }
+
+        // 카메라를 초기 위치로 되돌리고 플레이어 추적 재개
+        if (gameCamera != null)
+        {
+            gameCamera.ResetToInitial();
+            gameCamera.StartFollowing();
         }
 
         // Boss 리셋 (필요한 경우)
@@ -69,9 +69,16 @@ public class GameFlow : MonoBehaviour
     public void OnStageEnd()
     {
         // 플레이어 정지
-        if (player != null && player.Controller != null)
+        if (player != null)
         {
-            player.Controller.Freeze(true);
+            player.FreezePlayer();
+        }
+
+        // 카메라를 특정 위치로 이동하고 플레이어 추적 멈춤
+        if (gameCamera != null)
+        {
+            Quaternion targetRotation = Quaternion.Euler(endCameraRotation);
+            gameCamera.MoveTo(endCameraPosition, targetRotation, cameraTransitionDuration);
         }
 
         float area = painter.ComputeInkAreaWorld();
