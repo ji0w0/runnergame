@@ -47,7 +47,6 @@ Shader "Skybox/HyperCasual"
             #pragma fragment frag
             #include "UnityCG.cginc"
 
-            // Properties
             fixed4 _TopColor;
             fixed4 _HorizonColor;
             fixed4 _BottomColor;
@@ -85,7 +84,7 @@ Shader "Skybox/HyperCasual"
                 float3 viewDir : TEXCOORD1;
             };
 
-            // ³ëÀÌÁî ÇÔ¼ö (º°°ú ±¸¸§¿ë)
+            // ë…¸ì´ì¦ˆ í•¨ìˆ˜ (ë³„ê³¼ êµ¬ë¦„ìš©)
             float hash(float2 p)
             {
                 return frac(sin(dot(p, float2(127.1, 311.7))) * 43758.5453123);
@@ -106,7 +105,7 @@ Shader "Skybox/HyperCasual"
                 return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
             }
 
-            // FBM (Fractional Brownian Motion) - ±¸¸§¿ë
+            // FBM (Fractional Brownian Motion) - êµ¬ë¦„ìš©
             float fbm(float2 p)
             {
                 float value = 0.0;
@@ -122,7 +121,7 @@ Shader "Skybox/HyperCasual"
                 return value;
             }
 
-            // º° »ı¼º
+            // ë³„ ìƒì„±
             float stars(float3 dir)
             {
                 float3 p = dir * _StarsCount;
@@ -146,7 +145,6 @@ Shader "Skybox/HyperCasual"
                             float dist = length(starPos);
                             float star = smoothstep(_StarsSize, 0.0, dist);
                             
-                            // º° ±ôºıÀÓ È¿°ú
                             float twinkle = 0.5 + 0.5 * sin(_Time.y * 3.0 + random * 10.0);
                             star *= twinkle;
                             
@@ -171,7 +169,7 @@ Shader "Skybox/HyperCasual"
             {
                 float3 viewDir = normalize(i.viewDir);
                 
-                // È¸Àü ¾Ö´Ï¸ŞÀÌ¼Ç
+                // íšŒì „ ì• ë‹ˆë©”ì´ì…˜
                 float rotation = _Time.y * _RotationSpeed;
                 float cosRot = cos(rotation);
                 float sinRot = sin(rotation);
@@ -181,24 +179,23 @@ Shader "Skybox/HyperCasual"
                     viewDir.x * sinRot + viewDir.z * cosRot
                 );
                 
-                // 1. ±×¶óµ¥ÀÌ¼Ç ÇÏ´Ã »ö»ó
                 float skyGradient = rotatedDir.y + _HorizonOffset;
                 
                 fixed3 skyColor;
                 if (skyGradient > 0)
                 {
-                    // À§ÂÊ (ÁöÆò¼± ¡æ Á¤»ó)
+                    // ìœ„ìª½ (ì§€í‰ì„  â†’ ì •ìƒ)
                     float t = pow(skyGradient, _HorizonBlend);
                     skyColor = lerp(_HorizonColor.rgb, _TopColor.rgb, t);
                 }
                 else
                 {
-                    // ¾Æ·¡ÂÊ (ÁöÆò¼± ¡æ ¹Ù´Ú)
+                    // ì•„ë˜ìª½ (ì§€í‰ì„  â†’ ë°”ë‹¥)
                     float t = pow(-skyGradient, _HorizonBlend);
                     skyColor = lerp(_HorizonColor.rgb, _BottomColor.rgb, t);
                 }
                 
-                // 2. ÅÂ¾ç
+                // íƒœì–‘
                 float3 sunDir = normalize(_SunDirection);
                 float sunDot = dot(rotatedDir, sunDir);
                 float sun = smoothstep(1.0 - _SunSize, 1.0, sunDot);
@@ -207,12 +204,12 @@ Shader "Skybox/HyperCasual"
                 fixed3 sunContribution = (_SunColor.rgb * _SunIntensity) * (sun + sunGlow);
                 skyColor += sunContribution;
                 
-                // 3. º°µé (¹ãÇÏ´Ã È¿°ú)
-                float nightFactor = saturate(-rotatedDir.y * 2.0); // ¾Æ·¡ÂÊÀÏ¼ö·Ï º°ÀÌ º¸ÀÓ
+                // ë³„
+                float nightFactor = saturate(-rotatedDir.y * 2.0); // ì•„ë˜ìª½ì¼ìˆ˜ë¡ ë³„ì´ ë³´ì„
                 float starValue = stars(rotatedDir) * nightFactor;
                 skyColor += _StarsColor.rgb * starValue;
                 
-                // 4. ±¸¸§ (¿É¼Ç)
+                // êµ¬ë¦„
                 if (_EnableClouds > 0.5)
                 {
                     float2 cloudUV = rotatedDir.xz / (rotatedDir.y + 0.5) * _CloudScale;
@@ -221,7 +218,7 @@ Shader "Skybox/HyperCasual"
                     float clouds = fbm(cloudUV);
                     clouds = smoothstep(_CloudDensity - 0.1, _CloudDensity + 0.1, clouds);
                     
-                    // ÁöÆò¼± ±ÙÃ³¿¡¸¸ ±¸¸§ Ç¥½Ã
+                    // ì§€í‰ì„  ê·¼ì²˜ì—ë§Œ êµ¬ë¦„ í‘œì‹œ
                     float cloudFade = saturate(1.0 - abs(rotatedDir.y * 2.0));
                     clouds *= cloudFade;
                     
